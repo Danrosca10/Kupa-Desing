@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kupa Desing — Contacto</title>
+  <meta name="description" content="Kupa Desing — Diseñadora gráfica especializada en branding y diseño editorial. Contacto." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111111;
+      --muted:#666666;
+      --accent:#2f3658;
+      --max-width:900px;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:var(--max-width);
+      background:transparent;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:48px;
+      align-items:center;
+    }
+
+    .brand{
+      padding:24px 0;
+    }
+    .logo{
+      display:block;
+      width:120px;
+      height:auto;
+      margin-bottom:28px;
+    }
+    h1{
+      font-family:Playfair Display,serif;
+      font-size:40px;
+      line-height:1.02;
+      margin:0 0 12px 0;
+      font-weight:600;
+      color:var(--accent);
+    }
+    p.lead{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:55ch;
+    }
+
+    .form-wrap{
+      background:#fff;
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow:0 6px 20px rgba(12,12,12,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    input[type="text"],input[type="email"],textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:8px;
+      border:1px solid #e6e6e6;
+      font-size:15px;
+      font-family:Inter,system-ui;
+      outline:none
+    }
+    textarea{min-height:120px;resize:vertical}
+    .btn{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:10px;
+      background:var(--accent);
+      color:white;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+      font-size:15px;
+    }
+    .btn:disabled{opacity:0.5;cursor:default}
+
+    .social{margin-top:12px;font-size:14px}
+    .social a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.06);padding-bottom:2px}
+
+    footer{margin-top:28px;font-size:13px;color:var(--muted)}
+
+    @media (max-width:900px){
+      .card{grid-template-columns:1fr;gap:18px}
+      .logo{width:100px}
+      h1{font-size:32px}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <section class="brand" aria-labelledby="brand-title">
+      <img src="KD.png" alt="Kupa Desing - KD logo" class="logo">
+      <h1 id="brand-title">Kupa Desing</h1>
+      <p class="lead">Diseñadora gráfica especializada en <strong>branding</strong> y <strong>diseño editorial</strong>. Transformo ideas en identidades visuales con propósito y estilo.</p>
+      <div class="social">Sígueme en Instagram: <a href="https://www.instagram.com/kupa.desing" target="_blank" rel="noopener">@kupa.desing</a></div>
+      <footer>© 2025 Kupa Desing — Todos los derechos reservados.</footer>
+    </section>
+
+    <aside class="form-wrap" aria-labelledby="contact-title">
+      <h2 id="contact-title" style="margin:0 0 12px 0;font-family:Playfair Display,serif;">Contacto</h2>
+
+      <form id="contactForm">
+        <label for="name">Nombre</label>
+        <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" required>
+
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" placeholder="Contame del proyecto, presupuesto, plazos..." required></textarea>
+
+        <button id="submitBtn" class="btn" type="submit">Enviar mensaje</button>
+
+        <p id="status" style="margin:8px 0 0 0;font-size:13px;color:var(--muted)"></p>
+      </form>
+
+      <script>
+        (function(){
+          const form = document.getElementById('contactForm');
+          const btn = document.getElementById('submitBtn');
+          const status = document.getElementById('status');
+
+          const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mpwyknyo';
+
+          form.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            btn.disabled = true;
+            status.textContent = 'Enviando...';
+
+            const formData = new FormData(form);
+
+            try{
+              const resp = await fetch(FORMSPREE_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Accept': 'application/json' },
+                body: formData
+              });
+
+              if(resp.ok){
+                status.textContent = 'Gracias — tu mensaje fue enviado correctamente.';
+                form.reset();
+              } else {
+                status.textContent = 'Hubo un problema al enviar. Intenta nuevamente.';
+              }
+            }catch(err){
+              status.textContent = 'Error al conectar con el servidor. Revisa tu conexión.';
+            }
+
+            btn.disabled = false;
+          });
+
+        })();
+      </script>
+
+    </aside>
+  </main>
+</body>
+</html>
